@@ -1,9 +1,11 @@
-const { composePlugins, withNx } = require('@nrwl/webpack');
-const { withReact } = require('@nrwl/react');
-const { withModuleFederation } = require('@nrwl/react/module-federation');
+// @ts-check
 
+const { withModuleFederation } = require('@nrwl/react/module-federation');
 const baseConfig = require('./module-federation.config');
 
+/**
+ * @type {import('@nrwl/devkit').ModuleFederationConfig}
+ **/
 const prodConfig = {
   ...baseConfig,
   /*
@@ -27,12 +29,8 @@ const prodConfig = {
     ['header', 'http://localhost:4201/'],
     ['footer', 'http://localhost:4202/'],
     ['plp', 'http://localhost:4203/'],
+    ['another-page', 'http://localhost:4204/'],
   ],
 };
 
-// Nx plugins for webpack to build config object from Nx options and context.
-module.exports = composePlugins(
-  withNx(),
-  withReact(),
-  withModuleFederation(prodConfig)
-);
+module.exports = withModuleFederation(prodConfig);

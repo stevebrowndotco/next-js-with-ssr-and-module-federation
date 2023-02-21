@@ -1,5 +1,5 @@
 {
-  "name": "@next-9/ui-kit",
+  "name": "@next-poc-2/ui-kit",
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",

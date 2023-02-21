@@ -1,7 +1,5 @@
-import styled from 'styled-components';
-
 export function App() {
-  return <>FOOTER</>;
+  return <>Footer</>;
 }
 
 export default App;

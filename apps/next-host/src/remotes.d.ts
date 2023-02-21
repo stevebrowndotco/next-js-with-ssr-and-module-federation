@@ -4,5 +4,4 @@
 declare module 'header/Module';
 declare module 'footer/Module';
 declare module 'plp/Module';
-
 declare module 'another-page/Module';

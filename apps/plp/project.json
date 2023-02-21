@@ -10,15 +10,15 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "dist/apps/plp",
+        "outputPath": "dist/apps/plp/browser",
         "index": "apps/plp/src/index.html",
         "baseHref": "/",
         "main": "apps/plp/src/main.ts",
+        "polyfills": "apps/plp/src/polyfills.ts",
         "tsConfig": "apps/plp/tsconfig.app.json",
         "assets": ["apps/plp/src/favicon.ico", "apps/plp/src/assets"],
         "styles": [],
         "scripts": [],
-        "isolatedConfig": true,
         "webpackConfig": "apps/plp/webpack.config.js"
       },
       "configurations": {
@@ -46,6 +46,79 @@
       }
     },
     "serve": {
+      "executor": "@nrwl/webpack:ssr-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "browserTarget": "plp:build:development",
+        "serverTarget": "plp:serve-server:development",
+        "port": 4203,
+        "browserTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "browserTarget": "plp:build:production",
+          "serverTarget": "plp:serve-server:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/plp/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/plp/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve-static": {
+      "dependsOn": ["build", "server"],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "command": "PORT=4203 node dist/apps/plp/browser/server/main.js"
+      }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "main": "apps/plp/server.ts",
+        "outputPath": "dist/apps/plp/server",
+        "tsConfig": "apps/plp/tsconfig.server.json",
+        "compiler": "babel",
+        "externalDependencies": "all",
+        "outputHashing": "none",
+        "webpackConfig": "apps/plp/webpack.server.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/plp/src/environments/environment.ts",
+              "with": "apps/plp/src/environments/environment.prod.ts"
+            }
+          ],
+          "sourceMap": false
+        }
+      }
+    },
+    "serve-browser": {
       "executor": "@nrwl/react:module-federation-dev-server",
       "defaultConfiguration": "development",
       "options": {
@@ -63,40 +136,19 @@
         }
       }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/plp/**/*.{ts,tsx,js,jsx}"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "apps/plp/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
-    },
-    "serve-static": {
-      "executor": "@nrwl/web:file-server",
+    "serve-server": {
+      "executor": "@nrwl/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "plp:build",
-        "port": 4203
+        "buildTarget": "plp:server:development",
+        "buildTargetOptions": {
+          "watch": true
+        }
       },
       "configurations": {
-        "development": {
-          "buildTarget": "plp:build:development"
-        },
+        "development": {},
         "production": {
-          "buildTarget": "plp:build:production"
+          "buildTarget": "plp:server:production"
         }
       }
     }

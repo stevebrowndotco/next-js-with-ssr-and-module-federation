@@ -1,18 +1,17 @@
 import { Link } from 'react-router-dom';
+import { Nav } from './styles';
 
 export function App() {
   return (
-    <>
-      HEADER
-      <ul>
-        <li>
-          <Link to="/">Product Listing Page</Link>
-        </li>
-        <li>
-          <Link to="/another-page">AnotherPage</Link>
-        </li>
-      </ul>
-    </>
+    <Nav>
+      <li className="bg-red-500">
+        <Link to="/">Home (PLP)</Link>
+      </li>
+
+      <li>
+        <Link to="/another-page">AnotherPage</Link>
+      </li>
+    </Nav>
   );
 }
 
