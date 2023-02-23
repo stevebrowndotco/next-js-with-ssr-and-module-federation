@@ -5,12 +5,6 @@ import { useGetProducts } from '../use-get-products/use-get-products';
 export interface PlPListProps {}
 
 export function PlPList(props: PlPListProps) {
-  // const { data: productNumbers } = useGetProducts({
-  //   criteria: 'https://ci-test.next.co.uk',
-  //   start: 0,
-  //   pagesize: 8,
-  //   searchTerm: 'suits',
-  // });
   const { data: productFragments } = useGetProductFragments({
     criteria: 'https://ci-test.next.co.uk',
     start: 0,
@@ -18,9 +12,13 @@ export function PlPList(props: PlPListProps) {
     searchTerm: 'suits',
   });
 
-  console.log('productFragments', productFragments);
-
-  return <>Welcome to PlPList!</>;
+  return (
+    <>
+      {(productFragments as Array<string>)?.map((html: string) => {
+        return <div dangerouslySetInnerHTML={{ __html: html }} />;
+      })}
+    </>
+  );
 }
 
 export default PlPList;
