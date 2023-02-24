@@ -1,0 +1,61 @@
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+
+const Header = dynamic(
+  () => {
+    return import('header/index');
+  },
+  { suspense: true }
+);
+
+const Plp = dynamic(
+  () => {
+    return import('plp/index');
+  },
+  { suspense: true }
+);
+
+const Footer = dynamic(
+  () => {
+    return import('footer/index');
+  },
+  { suspense: true }
+);
+
+export function Index({ data }) {
+  return (
+    <div>
+      <div className="container border-2 border-slate-500 p-5 m-4">
+        <h1 className="text-3xl mb-4">
+          Next Micro front-end PoC (Module Federation)
+        </h1>
+        HOST Micro front-end
+        <Suspense>
+          <div className="border-2 border-red-500 p-5 mb-4">
+            <Header />
+          </div>
+
+          <p>Dynamically loaded micro-frontend:</p>
+
+          <div className="border-2 border-green-500 mb-4">
+            <Plp />
+          </div>
+
+          <div className="border-2 border-red-500 p-5">
+            <Footer />
+          </div>
+        </Suspense>
+      </div>
+    </div>
+  );
+}
+
+export async function getServerSideProps() {
+  const data = (await fetch('https://jsonplaceholder.typicode.com/todos/1')
+    .then((response) => response.json())
+    .then((data) => ({ data }))) as any;
+
+  return { props: { data: data.data.title } };
+}
+
+export default Index;

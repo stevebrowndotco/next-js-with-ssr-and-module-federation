@@ -1,7 +1,7 @@
 {
-  "name": "header",
+  "name": "host",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/header",
+  "sourceRoot": "apps/host",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,12 +9,12 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/header",
-        "outputPath": "dist/apps/header"
+        "root": "apps/host",
+        "outputPath": "dist/apps/host"
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/header"
+          "outputPath": "apps/host"
         },
         "production": {}
       }
@@ -23,17 +23,17 @@
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "header:build",
+        "buildTarget": "host:build",
         "dev": true,
-        "port": 4201
+        "port": 4200
       },
       "configurations": {
         "development": {
-          "buildTarget": "header:build:development",
+          "buildTarget": "host:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "header:build:production",
+          "buildTarget": "host:build:production",
           "dev": false
         }
       }
@@ -41,14 +41,14 @@
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
-        "buildTarget": "header:build:production"
+        "buildTarget": "host:build:production"
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/header/jest.config.ts",
+        "jestConfig": "apps/host/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -62,7 +62,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/header/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/host/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
