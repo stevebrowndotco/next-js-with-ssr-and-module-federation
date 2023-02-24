@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useGetProductFragments } from '../use-get-product-fragments/use-get-product-fragments';
 import { useGetProducts } from '../use-get-products/use-get-products';
 

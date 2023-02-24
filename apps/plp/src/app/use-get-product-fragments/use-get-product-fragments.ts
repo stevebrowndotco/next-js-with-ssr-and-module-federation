@@ -14,18 +14,6 @@ type FetchItemsParams = {
   searchTerm: string;
 };
 
-function extractScriptTags(content: string): string[] {
-  const regex = /<script\b[^>]*>([\s\S]*?)<\/script>/gm;
-  const matches = [];
-
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    matches.push(match[1]);
-  }
-
-  return matches;
-}
-
 export const fetchProducts = async ({
   criteria,
   start,
@@ -45,13 +33,16 @@ export const useGetProductFragments = ({
     ['items', criteria, start, pagesize, contextid, searchTerm],
     () =>
       fetchProducts({ criteria, start, pagesize, contextid, searchTerm }).then(
-        (res) =>
-          res.data
+        (res) => {
+          const products = res.data
             .toString()
             .split('<=>')
             .filter((data: Array<string>) => {
               return data.indexOf('<script') > -1;
-            })
+            });
+          console.log('products', res.data.toString().split('<=>'));
+          return products;
+        }
       )
   );
 };
