@@ -1,5 +1,5 @@
 import * as path from 'path';
-// import fetch from 'node-fetch';
+import 'cross-fetch/polyfill';
 import express from 'express';
 import cors from 'cors';
 

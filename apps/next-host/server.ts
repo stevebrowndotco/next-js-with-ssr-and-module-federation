@@ -1,6 +1,7 @@
 import * as path from 'path';
 import express from 'express';
 import cors from 'cors';
+import 'cross-fetch/polyfill';
 
 import { handleRequest } from './src/main.server';
 
