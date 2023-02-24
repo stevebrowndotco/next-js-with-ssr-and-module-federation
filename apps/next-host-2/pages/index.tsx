@@ -1,9 +1,13 @@
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import styled from 'styled-components';
 
 const StyledPage = styled.div`
   .page {
   }
 `;
+
+const RemotePlp = dynamic(() => import('plp/index'), { suspense: true });
 
 export function Index() {
   /*
@@ -13,6 +17,9 @@ export function Index() {
    */
   return (
     <StyledPage>
+      <Suspense>
+        <RemotePlp />
+      </Suspense>
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
