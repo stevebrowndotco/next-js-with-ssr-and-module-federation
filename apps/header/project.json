@@ -1,75 +1,47 @@
 {
   "name": "header",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/header/src",
+  "sourceRoot": "apps/header",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/header/browser",
-        "index": "apps/header/src/index.html",
-        "baseHref": "/",
-        "main": "apps/header/src/main.ts",
-        "polyfills": "apps/header/src/polyfills.ts",
-        "tsConfig": "apps/header/tsconfig.app.json",
-        "assets": ["apps/header/src/favicon.ico", "apps/header/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "apps/header/webpack.config.js",
-        "postcssConfig": "apps/header/postcss.config.js"
+        "root": "apps/header",
+        "outputPath": "dist/apps/header"
       },
       "configurations": {
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "outputPath": "apps/header"
         },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/header/src/environments/environment.ts",
-              "with": "apps/header/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "webpackConfig": "apps/header/webpack.config.prod.js"
-        }
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:ssr-dev-server",
+      "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "header:build:development",
-        "serverTarget": "header:serve-server:development",
-        "port": 4201,
-        "browserTargetOptions": {
-          "watch": true
-        }
+        "buildTarget": "header:build",
+        "dev": true,
+        "port": 4201
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "buildTarget": "header:build:development",
+          "dev": true
+        },
         "production": {
-          "browserTarget": "header:build:production",
-          "serverTarget": "header:serve-server:production"
+          "buildTarget": "header:build:production",
+          "dev": false
         }
       }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+    "export": {
+      "executor": "@nrwl/next:export",
       "options": {
-        "lintFilePatterns": ["apps/header/**/*.{ts,tsx,js,jsx}"]
+        "buildTarget": "header:build:production"
       }
     },
     "test": {
@@ -78,79 +50,19 @@
       "options": {
         "jestConfig": "apps/header/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "serve-static": {
-      "dependsOn": ["build", "server"],
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "command": "PORT=4201 node dist/apps/header/browser/server/main.js"
-      }
-    },
-    "server": {
-      "dependsOn": ["build"],
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "target": "node",
-        "main": "apps/header/server.ts",
-        "outputPath": "dist/apps/header/server",
-        "tsConfig": "apps/header/tsconfig.server.json",
-        "compiler": "babel",
-        "externalDependencies": "all",
-        "outputHashing": "none",
-        "webpackConfig": "apps/header/webpack.server.config.js"
       },
       "configurations": {
-        "development": {
-          "optimization": false,
-          "sourceMap": true
-        },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/header/src/environments/environment.ts",
-              "with": "apps/header/src/environments/environment.prod.ts"
-            }
-          ],
-          "sourceMap": false
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
         }
       }
     },
-    "serve-browser": {
-      "executor": "@nrwl/react:module-federation-dev-server",
-      "defaultConfiguration": "development",
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "buildTarget": "header:build",
-        "hmr": true,
-        "port": 4201
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "header:build:development"
-        },
-        "production": {
-          "buildTarget": "header:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "serve-server": {
-      "executor": "@nrwl/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "header:server:development",
-        "buildTargetOptions": {
-          "watch": true
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "buildTarget": "header:server:production"
-        }
+        "lintFilePatterns": ["apps/header/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

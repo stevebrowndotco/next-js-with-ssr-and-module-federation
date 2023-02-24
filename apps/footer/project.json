@@ -1,74 +1,47 @@
 {
   "name": "footer",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/footer/src",
+  "sourceRoot": "apps/footer",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/footer/browser",
-        "index": "apps/footer/src/index.html",
-        "baseHref": "/",
-        "main": "apps/footer/src/main.ts",
-        "polyfills": "apps/footer/src/polyfills.ts",
-        "tsConfig": "apps/footer/tsconfig.app.json",
-        "assets": ["apps/footer/src/favicon.ico", "apps/footer/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "apps/footer/webpack.config.js"
+        "root": "apps/footer",
+        "outputPath": "dist/apps/footer"
       },
       "configurations": {
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "outputPath": "apps/footer"
         },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/footer/src/environments/environment.ts",
-              "with": "apps/footer/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "webpackConfig": "apps/footer/webpack.config.prod.js"
-        }
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:ssr-dev-server",
+      "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "footer:build:development",
-        "serverTarget": "footer:serve-server:development",
-        "port": 4202,
-        "browserTargetOptions": {
-          "watch": true
-        }
+        "buildTarget": "footer:build",
+        "dev": true,
+        "port": 4202
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "buildTarget": "footer:build:development",
+          "dev": true
+        },
         "production": {
-          "browserTarget": "footer:build:production",
-          "serverTarget": "footer:serve-server:production"
+          "buildTarget": "footer:build:production",
+          "dev": false
         }
       }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+    "export": {
+      "executor": "@nrwl/next:export",
       "options": {
-        "lintFilePatterns": ["apps/footer/**/*.{ts,tsx,js,jsx}"]
+        "buildTarget": "footer:build:production"
       }
     },
     "test": {
@@ -77,79 +50,19 @@
       "options": {
         "jestConfig": "apps/footer/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "serve-static": {
-      "dependsOn": ["build", "server"],
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "command": "PORT=4202 node dist/apps/footer/browser/server/main.js"
-      }
-    },
-    "server": {
-      "dependsOn": ["build"],
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "target": "node",
-        "main": "apps/footer/server.ts",
-        "outputPath": "dist/apps/footer/server",
-        "tsConfig": "apps/footer/tsconfig.server.json",
-        "compiler": "babel",
-        "externalDependencies": "all",
-        "outputHashing": "none",
-        "webpackConfig": "apps/footer/webpack.server.config.js"
       },
       "configurations": {
-        "development": {
-          "optimization": false,
-          "sourceMap": true
-        },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/footer/src/environments/environment.ts",
-              "with": "apps/footer/src/environments/environment.prod.ts"
-            }
-          ],
-          "sourceMap": false
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
         }
       }
     },
-    "serve-browser": {
-      "executor": "@nrwl/react:module-federation-dev-server",
-      "defaultConfiguration": "development",
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "buildTarget": "footer:build",
-        "hmr": true,
-        "port": 4202
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "footer:build:development"
-        },
-        "production": {
-          "buildTarget": "footer:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "serve-server": {
-      "executor": "@nrwl/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "footer:server:development",
-        "buildTargetOptions": {
-          "watch": true
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "buildTarget": "footer:server:production"
-        }
+        "lintFilePatterns": ["apps/footer/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

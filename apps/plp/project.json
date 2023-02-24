@@ -1,74 +1,47 @@
 {
   "name": "plp",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/plp/src",
+  "sourceRoot": "apps/plp",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/plp/browser",
-        "index": "apps/plp/src/index.html",
-        "baseHref": "/",
-        "main": "apps/plp/src/main.ts",
-        "polyfills": "apps/plp/src/polyfills.ts",
-        "tsConfig": "apps/plp/tsconfig.app.json",
-        "assets": ["apps/plp/src/favicon.ico", "apps/plp/src/assets"],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "apps/plp/webpack.config.js"
+        "root": "apps/plp",
+        "outputPath": "dist/apps/plp"
       },
       "configurations": {
         "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
+          "outputPath": "apps/plp"
         },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/plp/src/environments/environment.ts",
-              "with": "apps/plp/src/environments/environment.prod.ts"
-            }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "webpackConfig": "apps/plp/webpack.config.prod.js"
-        }
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:ssr-dev-server",
+      "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "plp:build:development",
-        "serverTarget": "plp:serve-server:development",
-        "port": 4203,
-        "browserTargetOptions": {
-          "watch": true
-        }
+        "buildTarget": "plp:build",
+        "dev": true,
+        "port": 4300
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "buildTarget": "plp:build:development",
+          "dev": true
+        },
         "production": {
-          "browserTarget": "plp:build:production",
-          "serverTarget": "plp:serve-server:production"
+          "buildTarget": "plp:build:production",
+          "dev": false
         }
       }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+    "export": {
+      "executor": "@nrwl/next:export",
       "options": {
-        "lintFilePatterns": ["apps/plp/**/*.{ts,tsx,js,jsx}"]
+        "buildTarget": "plp:build:production"
       }
     },
     "test": {
@@ -77,79 +50,19 @@
       "options": {
         "jestConfig": "apps/plp/jest.config.ts",
         "passWithNoTests": true
-      }
-    },
-    "serve-static": {
-      "dependsOn": ["build", "server"],
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "command": "PORT=4203 node dist/apps/plp/browser/server/main.js"
-      }
-    },
-    "server": {
-      "dependsOn": ["build"],
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "target": "node",
-        "main": "apps/plp/server.ts",
-        "outputPath": "dist/apps/plp/server",
-        "tsConfig": "apps/plp/tsconfig.server.json",
-        "compiler": "babel",
-        "externalDependencies": "all",
-        "outputHashing": "none",
-        "webpackConfig": "apps/plp/webpack.server.config.js"
       },
       "configurations": {
-        "development": {
-          "optimization": false,
-          "sourceMap": true
-        },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/plp/src/environments/environment.ts",
-              "with": "apps/plp/src/environments/environment.prod.ts"
-            }
-          ],
-          "sourceMap": false
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
         }
       }
     },
-    "serve-browser": {
-      "executor": "@nrwl/react:module-federation-dev-server",
-      "defaultConfiguration": "development",
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "buildTarget": "plp:build",
-        "hmr": true,
-        "port": 4203
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "plp:build:development"
-        },
-        "production": {
-          "buildTarget": "plp:build:production",
-          "hmr": false
-        }
-      }
-    },
-    "serve-server": {
-      "executor": "@nrwl/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "plp:server:development",
-        "buildTargetOptions": {
-          "watch": true
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "buildTarget": "plp:server:production"
-        }
+        "lintFilePatterns": ["apps/plp/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

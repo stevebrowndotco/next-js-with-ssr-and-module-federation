@@ -63,6 +63,13 @@
         "linter": "eslint",
         "unitTestRunner": "jest"
       }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
     }
-  }
+  },
+  "defaultProject": "next-host-next"
 }
