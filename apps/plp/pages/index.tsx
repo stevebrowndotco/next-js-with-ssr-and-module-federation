@@ -2,17 +2,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import PlPList from '../components/pl-plist/pl-plist';
 
 const queryClient = new QueryClient();
-export function Index(props) {
-  console.log('posts', props);
+export function Index({ message }) {
   return (
     <QueryClientProvider client={queryClient}>
+      {message}
       <PlPList />
     </QueryClientProvider>
   );
 }
 
-Index.getInitialProps = async () => {
+export async function getServerSideProps(context) {
   return { props: { message: 'test' } };
-};
+}
 
 export default Index;
