@@ -12,7 +12,7 @@ const remotes = (isServer) => {
     : 'http://localhost:4300';
 
   return {
-    header: `header@${headerHost}/_next/static/${location}/remoteEntry.js`,
+    header: `header@http://${headerHost}/_next/static/${location}/remoteEntry.js`,
     plp: `plp@${plpHost}/_next/static/${location}/remoteEntry.js`,
   };
 };

@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 
 const Header = dynamic(
   () => {
+    // @ts-expect-error TODO: support types for importing MF
     return import('header/index');
   },
   { suspense: true }
@@ -10,6 +11,7 @@ const Header = dynamic(
 
 const Plp = dynamic(
   () => {
+    // @ts-expect-error TODO: support types for importing MF
     return import('plp/index');
   },
   { suspense: true }
@@ -42,9 +44,9 @@ export function Index({ data }) {
 }
 
 export async function getServerSideProps() {
-  const data = (await fetch('https://jsonplaceholder.typicode.com/todos/1')
+  const data = await fetch('https://jsonplaceholder.typicode.com/todos/1')
     .then((response) => response.json())
-    .then((data) => ({ data }))) as any;
+    .then((data) => ({ data }));
 
   return { props: { data: data.data.title } };
 }
