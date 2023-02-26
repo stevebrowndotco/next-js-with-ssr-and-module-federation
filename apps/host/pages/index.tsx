@@ -27,12 +27,14 @@ export function Index({ data }) {
         HOST Micro front-end
         <Suspense>
           <div className="border-2 border-red-500 p-5 mb-4">
+            Header Micro-frontend:
             <Header />
           </div>
 
-          <p>Dynamically loaded micro-frontend:</p>
+          <p>:</p>
 
           <div className="border-2 border-green-500 mb-4">
+            PLP Micro-frontend:
             <Plp />
           </div>
 
