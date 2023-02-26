@@ -3,10 +3,17 @@ const NextFederationPlugin = require('@module-federation/nextjs-mf');
 // loading remotes on demand, not ideal for SSR
 const remotes = (isServer) => {
   const location = isServer ? 'ssr' : 'chunks';
+
+  const headerHost = process.env.PRODUCTION
+    ? 'https://next-mf-header.vercel.app'
+    : 'http://localhost:4201';
+  const plpHost = process.env.PRODUCTION
+    ? 'https://next-mf-plp.vercel.app'
+    : 'http://localhost:4300';
+
   return {
-    header: `header@http://localhost:4201/_next/static/${location}/remoteEntry.js`,
-    plp: `plp@http://localhost:4300/_next/static/${location}/remoteEntry.js`,
-    footer: `footer@http://localhost:4202/_next/static/${location}/remoteEntry.js`,
+    header: `header@${headerHost}/_next/static/${location}/remoteEntry.js`,
+    plp: `plp@${plpHost}/_next/static/${location}/remoteEntry.js`,
   };
 };
 module.exports = {

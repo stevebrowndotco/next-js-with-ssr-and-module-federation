@@ -15,13 +15,6 @@ const Plp = dynamic(
   { suspense: true }
 );
 
-const Footer = dynamic(
-  () => {
-    return import('footer/index');
-  },
-  { suspense: true }
-);
-
 export function Index({ data }) {
   return (
     <div>
@@ -41,9 +34,7 @@ export function Index({ data }) {
             <Plp />
           </div>
 
-          <div className="border-2 border-red-500 p-5">
-            <Footer />
-          </div>
+          <div className="border-2 border-red-500 p-5">Footer</div>
         </Suspense>
       </div>
     </div>
