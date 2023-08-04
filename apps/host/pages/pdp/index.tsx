@@ -1,8 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
-import { lazy } from 'react';
 
 // @ts-ignore
-const RemotePDP = lazy(() => import('pdp/index'));
+import RemotePDP from 'pdp/index';
 
 export function PDPPage(props: Record<string, any>) {
   console.log('props', props);

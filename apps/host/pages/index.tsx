@@ -1,10 +1,11 @@
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 
 // @ts-expect-error TODO: support types for importing MF
-const Header = lazy(() => import('header/index'));
+import Header from 'header/index';
 
 // @ts-expect-error TODO: support types for importing MF
-const Plp = lazy(() => import('plp/index'));
+
+import Plp from 'plp/index';
 
 export function Index({ data }) {
   return (
